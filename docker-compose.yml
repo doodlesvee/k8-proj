@@ -1,0 +1,8 @@
+services:
+  app:
+    image: doodlesvee/k8-proj:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
