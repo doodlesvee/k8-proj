@@ -13,22 +13,22 @@ spec:
         app: k8-proj
     spec:
       containers:
-      - name: k8-proj
-        image: doodlesvee/k8-proj:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 3000
+        - name: k8-proj
+          image: doodlesvee/k8-proj:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
 
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
 
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /api
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
