@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>K8 Project App</title>
+	<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+	<header>
+		<h1>K8 Project App</h1>
+		<p class="subtitle">Static page served by Express</p>
+	</header>
+
+	<main>
+		<section class="card">
+			<h2>Web UI</h2>
+			<p>If you can see this, <code>index.html</code> is rendering correctly.</p>
+		</section>
+		<section class="card">
+			<h2>API Check</h2>
+			<p id="apiStatus">Checking /api ...</p>
+			<button id="refreshBtn">Refresh API Status</button>
+		</section>
+	</main>
+
+	<footer>
+		Running on port 3000
+	</footer>
+
+	<script>
+		async function checkApi() {
+			const el = document.getElementById('apiStatus');
+			try {
+				const res = await fetch('/api');
+				const data = await res.json();
+				el.className = 'status success';
+				el.textContent = data.message;
+			} catch (err) {
+				el.className = 'status';
+				el.textContent = 'API request failed';
+			}
+		}
+
+		document.getElementById('refreshBtn').addEventListener('click', checkApi);
+		checkApi();
+	</script>
+</body>
+</html>
