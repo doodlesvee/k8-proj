@@ -1,49 +1,130 @@
 <!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>K8 Project App</title>
-	<link rel="stylesheet" href="/styles.css" />
-</head>
-<body>
-	<header>
-		<h1>K8 Project App</h1>
-		<p class="subtitle">Static page served by Express</p>
-	</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>K8 Project - Azure AKS</title>
+    <link
+      rel="stylesheet"
+      href="/styles.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">
+          <span class="azure-icon">☁️</span>
+          <h1>K8s Project</h1>
+        </div>
+        <p class="subtitle">Running on Azure Kubernetes Service</p>
+        <div class="badge">
+          <span class="pulse"></span>
+          <span>Live on AKS</span>
+        </div>
+      </header>
 
-	<main>
-		<section class="card">
-			<h2>Web UI</h2>
-			<p>If you can see this, <code>index.html</code> is rendering correctly.</p>
-		</section>
-		<section class="card">
-			<h2>API Check</h2>
-			<p id="apiStatus">Checking /api ...</p>
-			<button id="refreshBtn">Refresh API Status</button>
-		</section>
-	</main>
+      <main>
+        <section class="card deployment-info">
+          <div class="card-icon">🚀</div>
+          <h2>Deployment Info</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Platform</span>
+              <span class="value">Azure AKS</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Region</span>
+              <span class="value">East US</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Version</span>
+              <span class="value highlight">v2.0.0</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Build Time</span>
+              <span
+                class="value"
+                id="buildTime"
+                >April 23, 2026</span
+              >
+            </div>
+          </div>
+        </section>
 
-	<footer>
-		Running on port 3000
-	</footer>
+        <section class="card api-status">
+          <div class="card-icon">⚡</div>
+          <h2>API Health</h2>
+          <div
+            id="apiStatus"
+            class="status-box checking"
+          >
+            <div class="status-indicator"></div>
+            <span>Checking API...</span>
+          </div>
+          <p
+            id="apiMessage"
+            class="api-message"
+          ></p>
+          <button
+            id="refreshBtn"
+            class="btn-primary"
+          >
+            <span class="btn-icon">🔄</span> Check API
+          </button>
+        </section>
 
-	<script>
-		async function checkApi() {
-			const el = document.getElementById('apiStatus');
-			try {
-				const res = await fetch('/api');
-				const data = await res.json();
-				el.className = 'status success';
-				el.textContent = data.message;
-			} catch (err) {
-				el.className = 'status';
-				el.textContent = 'API request failed';
-			}
-		}
+        <section class="card cluster-info">
+          <div class="card-icon">🎯</div>
+          <h2>Cluster Details</h2>
+          <ul class="cluster-list">
+            <li><span>Cluster:</span> k8proj-cluster</li>
+            <li><span>Namespace:</span> default</li>
+            <li><span>Replicas:</span> 2</li>
+            <li><span>Service:</span> LoadBalancer</li>
+          </ul>
+        </section>
+      </main>
 
-		document.getElementById('refreshBtn').addEventListener('click', checkApi);
-		checkApi();
-	</script>
-</body>
+      <footer>
+        <div class="footer-content">
+          <p>Migrated from AWS EKS → Azure AKS</p>
+          <p class="tech-stack">Node.js • Express • Helm • GitHub Actions</p>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      async function checkApi() {
+        const statusBox = document.getElementById("apiStatus");
+        const message = document.getElementById("apiMessage");
+
+        statusBox.className = "status-box checking";
+        statusBox.innerHTML =
+          '<div class="status-indicator"></div><span>Checking API...</span>';
+        message.textContent = "";
+
+        try {
+          const res = await fetch("/api");
+          const data = await res.json();
+          statusBox.className = "status-box success";
+          statusBox.innerHTML =
+            '<div class="status-indicator"></div><span>API Online</span>';
+          message.textContent = data.message;
+          message.className = "api-message success";
+        } catch (err) {
+          statusBox.className = "status-box error";
+          statusBox.innerHTML =
+            '<div class="status-indicator"></div><span>API Offline</span>';
+          message.textContent = "Failed to connect to API";
+          message.className = "api-message error";
+        }
+      }
+
+      document.getElementById("refreshBtn").addEventListener("click", checkApi);
+      checkApi();
+    </script>
+  </body>
 </html>
